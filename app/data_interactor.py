@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure
 from bson import json_util, ObjectId
 import json
@@ -23,6 +23,9 @@ def get_connection():
         print("✓ Successfully connected to MongoDB!")
         database = client[db_name]
         collection = database["contacts"]
+
+        collection.create_index([("phone_number", ASCENDING)], unique=True)
+
         return collection
     except ConnectionFailure as e:
         print(f"✗ Failed to connect to collection on Mongodb: {e}")
