@@ -1,15 +1,27 @@
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-from typing import List, Dict, Optional
 from bson import json_util, ObjectId
 import json
 
+load_dotenv()
+
+port= os.getenv('DB_PORT')
+host= os.getenv('DB_HOST')
+db_name= os.getenv('DB_NAME')
+
+
+
+
 def get_connection():
     try:
-        client = MongoClient("mongodb://localhost:27017/")
+        uri = f"mongodb://{host}:{port}/"
+        print(uri)
+        client = MongoClient(uri)
         client.admin.command("ping")
         print("✓ Successfully connected to MongoDB!")
-        database = client["contacts_db"]
+        database = client[db_name]
         collection = database["contacts"]
         return collection
     except ConnectionFailure as e:
