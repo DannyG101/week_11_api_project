@@ -1,9 +1,10 @@
 import os
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure
-from bson import json_util, ObjectId
-import json
+from bson import ObjectId
 from dotenv import load_dotenv
+from models.contact import Contact
+
 
 load_dotenv()
 
@@ -33,9 +34,11 @@ def get_connection():
 def get_all_contacts():
     list_of_contacts = []
     collection = get_connection()
-    results = json.loads(json_util.dumps(collection.find({})))
+    results = collection.find({})
     for contact in results:
-        list_of_contacts.append(contact)
+        contact = Contact(contact["first_name"], contact["last_name"], contact["phone_number"], str(contact["_id"]))
+        contact_dict = contact.contact_to_dict()
+        list_of_contacts.append(contact_dict)
     return list_of_contacts
 
 
