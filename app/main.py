@@ -4,7 +4,6 @@ import data_interactor
 from utils import helper_functions
 import uvicorn
 
-
 app = FastAPI()
 
 class Contact(BaseModel):

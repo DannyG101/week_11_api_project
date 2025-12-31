@@ -1,21 +1,20 @@
 import os
-from dotenv import load_dotenv
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure
 from bson import json_util, ObjectId
 import json
+from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_PORT= os.getenv('DB_PORT')
-MONGO_HOST= os.getenv('DB_HOST')
-MONGO_DB= os.getenv('DB_NAME')
+MONGO_HOST = os.getenv("MONGO_HOST")
+MONGO_PORT = os.getenv("MONGO_PORT")
+MONGO_DB   = os.getenv("MONGO_DB")
 
 
 def get_connection():
     try:
         uri = f"mongodb://{MONGO_HOST}:{MONGO_PORT}/"
-        print(uri)
         client = MongoClient(uri)
         client.admin.command("ping")
         print("✓ Successfully connected to MongoDB!")
@@ -62,4 +61,3 @@ def delete_contact(user_id):
     collection = get_connection()
     collection.delete_one({"_id":ObjectId(user_id)})
     return {"message": "Contact deleted successfully"}
-
