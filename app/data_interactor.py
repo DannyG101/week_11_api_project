@@ -7,21 +7,19 @@ import json
 
 load_dotenv()
 
-port= os.getenv('DB_PORT')
-host= os.getenv('DB_HOST')
-db_name= os.getenv('DB_NAME')
-
-
+MONGO_PORT= os.getenv('DB_PORT')
+MONGO_HOST= os.getenv('DB_HOST')
+MONGO_DB= os.getenv('DB_NAME')
 
 
 def get_connection():
     try:
-        uri = f"mongodb://{host}:{port}/"
+        uri = f"mongodb://{MONGO_HOST}:{MONGO_PORT}/"
         print(uri)
         client = MongoClient(uri)
         client.admin.command("ping")
         print("✓ Successfully connected to MongoDB!")
-        database = client[db_name]
+        database = client[MONGO_DB]
         collection = database["contacts"]
 
         collection.create_index([("phone_number", ASCENDING)], unique=True)

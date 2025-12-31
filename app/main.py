@@ -47,6 +47,3 @@ def delete_contact(user_id):
         return data_interactor.delete_contact(user_id)
     except HTTPException as err:
         return err
-
-
-uvicorn.run(app)
